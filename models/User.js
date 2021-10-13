@@ -21,7 +21,7 @@ const userSchema = new Schema({
     //rating: { type: Number, required: true, default: 0 },
     //points: { type: Number, required: true, default: 0 },
     billVoucher: { type: String, required: true },
-    role: { type: String, enum: roles, required: true, default: 'BASIC' }
+    role: { type: String, enum: roles, default: 'BASIC' }
 }, { _id: false });
 
 userSchema.plugin(AutoIncrement);

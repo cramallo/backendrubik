@@ -2,6 +2,42 @@ const Comment = require('../models/comment');
 const ProfessionalRating = require('../models/professionalRating');
 const router = require('express').Router();
 
+/**
+ * @swagger
+ * /comments/:professionalId/service/:serviceId:
+ *   post:
+ *     summary: Add comment method for professional from user
+ *     tags: [comments]
+ *     parameters:
+ *       - in : path
+ *         name: professionalId
+ *         description: id of professional
+ *         schema:
+ *           type: integer
+ *         required: true
+ *       - in : path
+ *         name: serviceId
+ *         description: id of service
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/dtos/CommentDTO'
+ *     responses:
+ *       200:
+ *         description: The comment was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Comment'
+ *       500:
+ *         description: Server error
+ */
+
 router.post('/:professional/service/:eventId', async (req, res) => {
 
     const comment = new Comment({
@@ -71,10 +107,34 @@ router.get('/:user/:eventId', async (req, res) => {
     }
 });
 
-router.get('/:userId', async (req, res) => {
+/**
+ * @swagger
+ * /comments/:professionalId:
+ *   get:
+ *     summary: Get comments by professionalId
+ *     tags: [services]
+ *     parameters:
+ *       - in : path
+ *         name: id
+ *         description: id of professional
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: The comments were returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Comment'
+ *       500:
+ *         description: Server error
+ */
+
+router.get('/:professionalId', async (req, res) => {
 
     try {
-        const comments = await Comment.find({professional: req.params.userId}).populate('user');
+        const comments = await Comment.find({professional: req.params.professionalId}).populate('user');
         res.send(comments);
     } catch (err) {
         console.log("route error");

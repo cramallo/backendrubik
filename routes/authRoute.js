@@ -13,6 +13,29 @@ const jwt = require('jsonwebtoken');
 
 const sendGrid = require('@sendgrid/mail');
 
+/**
+ * @swagger
+ * /auth/signup/professional:
+ *   post:
+ *     summary: Create standard user
+ *     tags: [auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/dtos/ProfessionalDTO'
+ *     responses:
+ *       200:
+ *         description: The user was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Professional'
+ *       500:
+ *         description: Server error
+ */
+
 router.post('/signup/professional', [verifybody.signUpProfessionalValidation, verifyUser.verifySignUpUser], async (req, res) => {
     const user = await saveUser(req, 'PROFESSIONAL');
     const professional = new Professional({
@@ -36,6 +59,29 @@ router.post('/signup/professional', [verifybody.signUpProfessionalValidation, ve
         res.status(500).send(err);
     }
 });
+
+/**
+ * @swagger
+ * /auth/signup:
+ *   post:
+ *     summary: Create standard user
+ *     tags: [auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/dtos/UserDTO'
+ *     responses:
+ *       200:
+ *         description: The user was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Server error
+ */
 
 router.post('/signup', [verifybody.signUpValidation, verifyUser.verifySignUpUser], async (req, res) => {
     const user = await saveUser(req, 'BASIC');
@@ -84,9 +130,32 @@ async function saveUser(req, role) {
         return savedUser;
     } catch (err) {
         console.log(err);
-        res.status(400).send(err);
+        res.status(500).send(err);
     }
 }
+
+/**
+ * @swagger
+ * /auth/signIn:
+ *   post:
+ *     summary: Sign in user
+ *     tags: [auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/dtos/SignInDTO'
+ *     responses:
+ *       200:
+ *         description: The user was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Server error
+ */
 
 router.post('/signin', [verifybody.logInValidation, verifyUser.verifySignInUser], async (req, res) => {
     const user = req.user;

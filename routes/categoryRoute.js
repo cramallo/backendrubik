@@ -1,6 +1,30 @@
 const Category = require('../models/category');
 const router = require('express').Router();
 
+/**
+ * @swagger
+ * /category:
+ *   post:
+ *     summary: Create Category
+ *     tags: [categories]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/dtos/CategoryDTO'
+ *     responses:
+ *       200:
+ *         description: The category was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Category'
+ *       500:
+ *         description: Server error
+ */
+
+
 router.post('/', async (req, res) => {
 
     const category = new Category({
@@ -18,6 +42,24 @@ router.post('/', async (req, res) => {
         res.status(400).send(err);
     }
 });
+
+/**
+ * @swagger
+ * /category:
+ *   get:
+ *     summary: Get all categories
+ *     tags: [categories]
+ *     responses:
+ *       200:
+ *         description: The categories were returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               $ref: '#/components/schemas/Category'
+ *       500:
+ *         description: Server error
+ */
 
 router.get('/', async (req, res) => {
     

@@ -6,6 +6,7 @@ const serviceSchema = new Schema({
     name: { type: String, required: true, unique: true },
     description:  { type: String, required: true },
     category: { type: Number, ref: 'Category', required: true },
+    mainImage: { type: String },
     imgs: [ { type: String } ]
 });
 
